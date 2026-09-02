@@ -1,0 +1,130 @@
+digraph DBSchemaSummary {
+    graph [
+        rankdir=TB,
+        splines=polyline,
+        nodesep=0.45,
+        ranksep=0.7,
+        pad=0.35,
+        bgcolor="white",
+        fontname="Helvetica"
+    ];
+
+    node [
+        shape=plain,
+        fontname="Helvetica"
+    ];
+
+    edge [
+        color="#475569",
+        penwidth=1.5,
+        arrowsize=0.9,
+        fontname="Helvetica",
+        fontsize=12
+    ];
+
+    Title [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="12" COLOR="#0f172a">
+            <TR><TD BGCOLOR="#0f172a"><FONT COLOR="white" POINT-SIZE="26"><B>Procurement and Warehouse Database</B></FONT></TD></TR>
+            <TR><TD BGCOLOR="#f8fafc"><FONT POINT-SIZE="16">Tracks the full lifecycle from supplier and material setup to purchase requests, approvals, budgets, offers, orders, deliveries, inspections, vendor claims, stock balances, and audit logs.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Security [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#dbeafe"><FONT POINT-SIZE="20"><B>1. Security and People</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f8fbff"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• UserGroups<BR ALIGN="LEFT"/>• BusinessPartners<BR ALIGN="LEFT"/>• Employees<BR ALIGN="LEFT"/>• Suppliers<BR ALIGN="LEFT"/>• AppUsers<BR ALIGN="LEFT"/>• UserGroupMembers<BR ALIGN="LEFT"/>• SupplierContacts</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#eff6ff"><FONT POINT-SIZE="14"><B>Purpose:</B> who works in the system, who supplies goods, how users log in, and which supplier contacts are used in procurement.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Master [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#fef3c7"><FONT POINT-SIZE="20"><B>2. Material Master</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fffdf5"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• MeasurementUnits<BR ALIGN="LEFT"/>• MaterialTypes<BR ALIGN="LEFT"/>• Materials<BR ALIGN="LEFT"/>• MaterialSpecifications</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fffbeb"><FONT POINT-SIZE="14"><B>Purpose:</B> defines what the company buys and stocks, how each item is measured, how it is classified, and which technical details belong to it.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Requests [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#dcfce7"><FONT POINT-SIZE="20"><B>3. Purchase Requests</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f5fff7"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• PurchaseRequests<BR ALIGN="LEFT"/>• PurchaseRequestItems</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f0fdf4"><FONT POINT-SIZE="14"><B>Purpose:</B> employees request materials for a specific warehouse, date, priority, and quantity.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Offers [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#bbf7d0"><FONT POINT-SIZE="20"><B>4. Supplier Offers</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f5fff7"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• PurchaseOffers<BR ALIGN="LEFT"/>• PurchaseOfferItems</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#ecfdf5"><FONT POINT-SIZE="14"><B>Purpose:</B> suppliers submit quotations against requested items, with offered quantity, price, and promised delivery date.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Orders [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#86efac"><FONT POINT-SIZE="20"><B>5. Orders and Receiving</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f5fff7"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• PurchaseOrders<BR ALIGN="LEFT"/>• PurchaseOrderItems<BR ALIGN="LEFT"/>• DeliveryReceipts<BR ALIGN="LEFT"/>• DeliveryReceiptItems</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#ecfdf5"><FONT POINT-SIZE="14"><B>Purpose:</B> approved offers become orders, then actual deliveries are recorded with accepted and rejected quantities.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Governance [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#fde68a"><FONT POINT-SIZE="20"><B>6. Workflow and Budget</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fffdf0"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• ApprovalRules<BR ALIGN="LEFT"/>• ApprovalSteps<BR ALIGN="LEFT"/>• DepartmentBudgets<BR ALIGN="LEFT"/>• BudgetTransactions</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fffbeb"><FONT POINT-SIZE="14"><B>Purpose:</B> controls who approves requests and orders, and how monthly department spending is committed and monitored.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Warehouse [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#bfdbfe"><FONT POINT-SIZE="20"><B>7. Warehouse and Inventory</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f7fbff"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• Warehouses<BR ALIGN="LEFT"/>• InventoryBalances<BR ALIGN="LEFT"/>• MaterialTransactionTypes<BR ALIGN="LEFT"/>• MaterialTransactions<BR ALIGN="LEFT"/>• MaterialTransactionItems</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#eff6ff"><FONT POINT-SIZE="14"><B>Purpose:</B> keeps current stock, movement history, receipts, issues, and warehouse-level quantity changes.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Quality [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#fecdd3"><FONT POINT-SIZE="20"><B>8. Quality and Claims</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fff1f2"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• QualityInspections<BR ALIGN="LEFT"/>• QualityInspectionItems<BR ALIGN="LEFT"/>• VendorClaims<BR ALIGN="LEFT"/>• VendorClaimItems</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#fff5f7"><FONT POINT-SIZE="14"><B>Purpose:</B> evaluates received goods after delivery and turns rejected or quarantined quantities into supplier claim records.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Audit [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#ddd6fe"><FONT POINT-SIZE="20"><B>9. Audit and Control</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#faf7ff"><FONT POINT-SIZE="14"><B>What it stores:</B><BR ALIGN="LEFT"/>• AuditLogs</FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#f5f3ff"><FONT POINT-SIZE="14"><B>Purpose:</B> tracks important status changes and supports accountability inside procurement and warehouse operations.</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    Summary [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10" COLOR="#94a3b8">
+            <TR><TD BGCOLOR="#f1f5f9"><FONT POINT-SIZE="18"><B>What kind of database is this?</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff"><FONT POINT-SIZE="14">This is a procurement and warehouse management database for a manufacturing company. It answers six main questions:<BR ALIGN="LEFT"/>1. Who is requesting and approving materials?<BR ALIGN="LEFT"/>2. Which supplier offered what price?<BR ALIGN="LEFT"/>3. Which orders consumed budget?<BR ALIGN="LEFT"/>4. Which deliveries passed inspection?<BR ALIGN="LEFT"/>5. Which rejected items became supplier claims?<BR ALIGN="LEFT"/>6. What is the current stock level in each warehouse?</FONT></TD></TR>
+        </TABLE>
+    >];
+
+    { rank=same; Security; Master; }
+    { rank=same; Requests; Offers; Orders; Governance; }
+    { rank=same; Warehouse; Quality; Audit; Summary; }
+
+    Security -> Requests [label="employees create requests"];
+    Master -> Requests [label="materials are requested"];
+    Requests -> Offers [label="suppliers quote against requests"];
+    Offers -> Orders [label="accepted offers become purchase orders"];
+    Requests -> Governance [label="request approvals"];
+    Orders -> Governance [label="order approvals and budget commitments"];
+    Orders -> Warehouse [label="received goods update stock"];
+    Warehouse -> Quality [label="receipts are inspected"];
+    Quality -> Audit [label="claim and inspection events are monitored"];
+    Warehouse -> Audit [label="movements and status changes are monitored"];
+    Security -> Audit [label="user actions can be traced"];
+    Master -> Warehouse [label="materials are stored and moved"];
+
+    Title -> Security [style=invis, weight=10];
+    Title -> Master [style=invis, weight=10];
+}

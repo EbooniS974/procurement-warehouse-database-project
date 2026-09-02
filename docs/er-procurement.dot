@@ -1,0 +1,76 @@
+digraph ERProcurement {
+    graph [
+        rankdir=LR,
+        splines=polyline,
+        nodesep=0.95,
+        ranksep=1.15,
+        pad=0.35,
+        bgcolor="white",
+        fontname="Helvetica"
+    ];
+
+    node [
+        shape=box,
+        style="rounded,filled",
+        fillcolor="#f0fdf4",
+        color="#166534",
+        penwidth=1.3,
+        fontname="Helvetica",
+        fontsize=18,
+        margin="0.22,0.14"
+    ];
+
+    edge [
+        color="#166534",
+        penwidth=1.35,
+        arrowsize=0.85,
+        fontname="Helvetica",
+        fontsize=12
+    ];
+
+    Employees [label="Employees"];
+    Suppliers [label="Suppliers"];
+    Warehouses [label="Warehouses"];
+    Materials [label="Materials"];
+    PurchaseRequests [label="PurchaseRequests"];
+    PurchaseRequestItems [label="PurchaseRequestItems"];
+    PurchaseOffers [label="PurchaseOffers"];
+    PurchaseOfferItems [label="PurchaseOfferItems"];
+    PurchaseOrders [label="PurchaseOrders"];
+    PurchaseOrderItems [label="PurchaseOrderItems"];
+    ApprovalRules [label="ApprovalRules"];
+    ApprovalSteps [label="ApprovalSteps"];
+    DepartmentBudgets [label="DepartmentBudgets"];
+    BudgetTransactions [label="BudgetTransactions"];
+    UserGroups [label="UserGroups"];
+
+    Employees -> PurchaseRequests [label="creates"];
+    Warehouses -> PurchaseRequests [label="requested for"];
+    PurchaseRequests -> PurchaseRequestItems [label="1 to N"];
+    Materials -> PurchaseRequestItems [label="requested material"];
+
+    PurchaseRequests -> PurchaseOffers [label="answered by"];
+    Suppliers -> PurchaseOffers [label="submits"];
+    Employees -> PurchaseOffers [label="records"];
+    PurchaseOffers -> PurchaseOfferItems [label="1 to N"];
+    PurchaseRequestItems -> PurchaseOfferItems [label="quoted for"];
+    Materials -> PurchaseOfferItems [label="quoted material"];
+
+    Suppliers -> PurchaseOrders [label="receives"];
+    Employees -> PurchaseOrders [label="creates / approves"];
+    PurchaseOrders -> PurchaseOrderItems [label="1 to N"];
+    PurchaseOfferItems -> PurchaseOrderItems [label="converted from"];
+    PurchaseRequestItems -> PurchaseOrderItems [label="fulfills"];
+    Materials -> PurchaseOrderItems [label="ordered material"];
+
+    UserGroups -> ApprovalRules [label="owns rule"];
+    ApprovalRules -> ApprovalSteps [label="instantiates"];
+    PurchaseRequests -> ApprovalSteps [label="request steps"];
+    PurchaseOrders -> ApprovalSteps [label="order steps"];
+    Employees -> ApprovalSteps [label="decides"];
+
+    Employees -> DepartmentBudgets [label="approves"];
+    DepartmentBudgets -> BudgetTransactions [label="1 to N"];
+    PurchaseOrders -> BudgetTransactions [label="commits amount"];
+    Employees -> BudgetTransactions [label="posts"];
+}

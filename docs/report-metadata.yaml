@@ -1,0 +1,20 @@
+lang: "en"
+toc: true
+toc-depth: 2
+numbersections: false
+colorlinks: true
+geometry:
+  - margin=1in
+fontsize: 11pt
+linestretch: 1.15
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{pdflscape}
+  - \usepackage{longtable}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \usepackage{caption}
+  - \captionsetup{font=small,labelfont=bf}
+  - \setlength{\parskip}{6pt}
+  - \setlength{\parindent}{0pt}

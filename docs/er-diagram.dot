@@ -1,0 +1,181 @@
+digraph ProcurementWarehouseER {
+    graph [
+        rankdir=LR,
+        splines=ortho,
+        nodesep=0.45,
+        ranksep=0.8,
+        pad=0.2,
+        bgcolor="white",
+        fontname="Helvetica"
+    ];
+
+    node [
+        shape=record,
+        style="rounded,filled",
+        fillcolor="#f8fafc",
+        color="#334155",
+        fontname="Helvetica",
+        fontsize=10,
+        margin="0.08,0.05"
+    ];
+
+    edge [
+        color="#475569",
+        arrowsize=0.7,
+        penwidth=1.1,
+        fontname="Helvetica",
+        fontsize=9
+    ];
+
+    subgraph cluster_security {
+        label="Security and Personnel";
+        color="#cbd5e1";
+        style="rounded";
+
+        UserGroups [label="{UserGroups|PK GroupID\lGroupName\lIsActive\l}"];
+        BusinessPartners [label="{BusinessPartners|PK PartnerID\lPartnerType\lLegalName\lEmail\lPhone\lIsActive\l}"];
+        Employees [label="{Employees|PK/FK PartnerID\lEmployeeNo\lFirstName\lLastName\lFK GroupID\lDepartmentName\l}"];
+        Suppliers [label="{Suppliers|PK/FK PartnerID\lSupplierCode\lTaxNumber\lPaymentTermDays\lPreferredSupplier\l}"];
+        AppUsers [label="{AppUsers|PK UserID\lFK EmployeeID\lUserName\lUserEmail\lUserStatus\l}"];
+        UserGroupMembers [label="{UserGroupMembers|PK/FK UserID\lPK/FK GroupID\lAssignedAt\l}"];
+        SupplierContacts [label="{SupplierContacts|PK ContactID\lFK SupplierID\lContactName\lContactEmail\lIsPrimary\l}"];
+    }
+
+    subgraph cluster_master {
+        label="Material Master";
+        color="#cbd5e1";
+        style="rounded";
+
+        MeasurementUnits [label="{MeasurementUnits|PK UnitID\lUnitCode\lUnitName\l}"];
+        MaterialTypes [label="{MaterialTypes|PK MaterialTypeID\lTypeCode\lTypeName\l}"];
+        Materials [label="{Materials|PK MaterialID\lMaterialCode\lMaterialName\lFK MaterialTypeID\lFK BaseUnitID\lReorderLevel\l}"];
+        MaterialSpecifications [label="{MaterialSpecifications|PK/FK MaterialID\lDrawingNo\lRevisionNo\lFK MainSubstituteMaterialID\l}"];
+    }
+
+    subgraph cluster_stock {
+        label="Warehouse and Stock";
+        color="#cbd5e1";
+        style="rounded";
+
+        Warehouses [label="{Warehouses|PK WarehouseID\lWarehouseCode\lWarehouseName\lFK ManagerID\lIsActive\l}"];
+        InventoryBalances [label="{InventoryBalances|PK InventoryID\lFK WarehouseID\lFK MaterialID\lOnHandQuantity\lReservedQuantity\l}"];
+        MaterialTransactionTypes [label="{MaterialTransactionTypes|PK TransactionTypeID\lTypeCode\lTypeName\lStockEffect\l}"];
+        MaterialTransactions [label="{MaterialTransactions|PK TransactionID\lTransactionNo\lFK TransactionTypeID\lFK WarehouseID\lFK RelatedRequestID\lFK RelatedOrderID\lFK ReferenceReceiptID\lFK CreatedByEmployeeID\l}"];
+        MaterialTransactionItems [label="{MaterialTransactionItems|PK TransactionItemID\lFK TransactionID\lFK MaterialID\lQuantity\lUnitCost\l}"];
+    }
+
+    subgraph cluster_procurement {
+        label="Procurement Documents";
+        color="#cbd5e1";
+        style="rounded";
+
+        PurchaseRequests [label="{PurchaseRequests|PK RequestID\lRequestNo\lFK RequestedByEmployeeID\lFK WarehouseID\lRequestStatus\lPriorityCode\l}"];
+        PurchaseRequestItems [label="{PurchaseRequestItems|PK RequestItemID\lFK RequestID\lFK MaterialID\lRequestedQuantity\lApprovedQuantity\lItemStatus\l}"];
+        PurchaseOffers [label="{PurchaseOffers|PK OfferID\lOfferNo\lFK RequestID\lFK SupplierID\lFK CreatedByEmployeeID\lOfferStatus\l}"];
+        PurchaseOfferItems [label="{PurchaseOfferItems|PK OfferItemID\lFK OfferID\lFK RequestItemID\lFK MaterialID\lOfferedQuantity\lUnitPrice\l}"];
+        PurchaseOrders [label="{PurchaseOrders|PK OrderID\lOrderNo\lFK SupplierID\lFK CreatedByEmployeeID\lFK ApprovedByEmployeeID\lOrderStatus\l}"];
+        PurchaseOrderItems [label="{PurchaseOrderItems|PK OrderItemID\lFK OrderID\lFK OfferItemID\lFK RequestItemID\lFK MaterialID\lOrderedQuantity\lReceivedQuantity\l}"];
+    }
+
+    subgraph cluster_governance {
+        label="Workflow and Budget Control";
+        color="#cbd5e1";
+        style="rounded";
+
+        ApprovalRules [label="{ApprovalRules|PK ApprovalRuleID\lTargetTable\lStepNo\lFK GroupID\lRuleName\lIsActive\l}"];
+        ApprovalSteps [label="{ApprovalSteps|PK ApprovalID\lFK ApprovalRuleID\lTargetTable\lTargetRecordID\lStepNo\lFK AssignedGroupID\lApprovalStatus\lFK DecisionByEmployeeID\l}"];
+        DepartmentBudgets [label="{DepartmentBudgets|PK BudgetID\lDepartmentName\lBudgetYear\lBudgetMonth\lBudgetAmount\lAlertThresholdPct\lFK ApprovedByEmployeeID\l}"];
+        BudgetTransactions [label="{BudgetTransactions|PK BudgetTransactionID\lFK BudgetID\lFK RelatedOrderID\lTransactionType\lAmount\lFK CreatedByEmployeeID\lTransactionDate\l}"];
+    }
+
+    subgraph cluster_receipt {
+        label="Delivery, Quality, Claims, and Audit";
+        color="#cbd5e1";
+        style="rounded";
+
+        DeliveryReceipts [label="{DeliveryReceipts|PK ReceiptID\lReceiptNo\lFK OrderID\lFK ReceivedWarehouseID\lFK ReceivedByEmployeeID\lInvoiceNo\lReceiptStatus\l}"];
+        DeliveryReceiptItems [label="{DeliveryReceiptItems|PK ReceiptItemID\lFK ReceiptID\lFK OrderItemID\lFK MaterialID\lAcceptedQuantity\lRejectedQuantity\l}"];
+        QualityInspections [label="{QualityInspections|PK InspectionID\lInspectionNo\lFK ReceiptID\lFK InspectedByEmployeeID\lInspectionStatus\l}"];
+        QualityInspectionItems [label="{QualityInspectionItems|PK InspectionItemID\lFK InspectionID\lFK ReceiptItemID\lFK MaterialID\lAcceptedQuantity\lRejectedQuantity\lQuarantineQuantity\l}"];
+        VendorClaims [label="{VendorClaims|PK ClaimID\lClaimNo\lFK SupplierID\lFK OrderID\lFK InspectionID\lClaimStatus\lFK CreatedByEmployeeID\l}"];
+        VendorClaimItems [label="{VendorClaimItems|PK ClaimItemID\lFK ClaimID\lFK InspectionItemID\lFK MaterialID\lClaimedQuantity\lUnitPrice\l}"];
+        AuditLogs [label="{AuditLogs|PK AuditLogID\lTableName\lRecordID\lActionName\lFK ChangedByEmployeeID\lChangedAt\l}"];
+    }
+
+    BusinessPartners -> Employees [label="1 to 0..1"];
+    BusinessPartners -> Suppliers [label="1 to 0..1"];
+    UserGroups -> Employees [label="1 to N"];
+    Employees -> AppUsers [label="1 to 0..N"];
+    AppUsers -> UserGroupMembers [label="1 to N"];
+    UserGroups -> UserGroupMembers [label="1 to N"];
+    Suppliers -> SupplierContacts [label="1 to N"];
+
+    MaterialTypes -> Materials [label="1 to N"];
+    MeasurementUnits -> Materials [label="1 to N"];
+    Materials -> MaterialSpecifications [label="1 to 0..1"];
+    Materials -> MaterialSpecifications [label="1 to 0..N", taillabel="substitute", labeldistance=2.2];
+
+    Employees -> Warehouses [label="1 to N"];
+    Warehouses -> InventoryBalances [label="1 to N"];
+    Materials -> InventoryBalances [label="1 to N"];
+
+    Employees -> PurchaseRequests [label="1 to N"];
+    Warehouses -> PurchaseRequests [label="1 to N"];
+    PurchaseRequests -> PurchaseRequestItems [label="1 to N"];
+    Materials -> PurchaseRequestItems [label="1 to N"];
+
+    PurchaseRequests -> PurchaseOffers [label="1 to N"];
+    Suppliers -> PurchaseOffers [label="1 to N"];
+    Employees -> PurchaseOffers [label="1 to N"];
+    PurchaseOffers -> PurchaseOfferItems [label="1 to N"];
+    PurchaseRequestItems -> PurchaseOfferItems [label="1 to N"];
+    Materials -> PurchaseOfferItems [label="1 to N"];
+
+    Suppliers -> PurchaseOrders [label="1 to N"];
+    Employees -> PurchaseOrders [label="creator / approver"];
+    PurchaseOrders -> PurchaseOrderItems [label="1 to N"];
+    PurchaseOfferItems -> PurchaseOrderItems [label="1 to 0..N"];
+    PurchaseRequestItems -> PurchaseOrderItems [label="1 to 0..N"];
+    Materials -> PurchaseOrderItems [label="1 to N"];
+
+    UserGroups -> ApprovalRules [label="1 to N"];
+    ApprovalRules -> ApprovalSteps [label="1 to N"];
+    UserGroups -> ApprovalSteps [label="assigned group"];
+    Employees -> ApprovalSteps [label="decision by"];
+    PurchaseRequests -> ApprovalSteps [label="request approval"];
+    PurchaseOrders -> ApprovalSteps [label="order approval"];
+    Employees -> DepartmentBudgets [label="approves"];
+    DepartmentBudgets -> BudgetTransactions [label="1 to N"];
+    PurchaseOrders -> BudgetTransactions [label="0..1 to N"];
+    Employees -> BudgetTransactions [label="posts"];
+
+    PurchaseOrders -> DeliveryReceipts [label="1 to N"];
+    Warehouses -> DeliveryReceipts [label="1 to N"];
+    Employees -> DeliveryReceipts [label="1 to N"];
+    DeliveryReceipts -> DeliveryReceiptItems [label="1 to N"];
+    PurchaseOrderItems -> DeliveryReceiptItems [label="1 to N"];
+    Materials -> DeliveryReceiptItems [label="1 to N"];
+    DeliveryReceipts -> QualityInspections [label="1 to N"];
+    Employees -> QualityInspections [label="1 to N"];
+    QualityInspections -> QualityInspectionItems [label="1 to N"];
+    DeliveryReceiptItems -> QualityInspectionItems [label="1 to N"];
+    Materials -> QualityInspectionItems [label="1 to N"];
+    Suppliers -> VendorClaims [label="1 to N"];
+    PurchaseOrders -> VendorClaims [label="0..1 to N"];
+    QualityInspections -> VendorClaims [label="0..1 to N"];
+    Employees -> VendorClaims [label="creates"];
+    VendorClaims -> VendorClaimItems [label="1 to N"];
+    QualityInspectionItems -> VendorClaimItems [label="1 to 0..N"];
+    Materials -> VendorClaimItems [label="1 to N"];
+
+    MaterialTransactionTypes -> MaterialTransactions [label="1 to N"];
+    Warehouses -> MaterialTransactions [label="1 to N"];
+    PurchaseRequests -> MaterialTransactions [label="0..1 to N"];
+    PurchaseOrders -> MaterialTransactions [label="0..1 to N"];
+    DeliveryReceipts -> MaterialTransactions [label="0..1 to N"];
+    Employees -> MaterialTransactions [label="1 to N"];
+    MaterialTransactions -> MaterialTransactionItems [label="1 to N"];
+    Materials -> MaterialTransactionItems [label="1 to N"];
+
+    Employees -> AuditLogs [label="1 to N"];
+}

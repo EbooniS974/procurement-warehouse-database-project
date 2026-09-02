@@ -1,0 +1,54 @@
+digraph EROverview {
+    graph [
+        rankdir=LR,
+        splines=polyline,
+        nodesep=1.1,
+        ranksep=1.25,
+        pad=0.35,
+        bgcolor="white",
+        fontname="Helvetica"
+    ];
+
+    node [
+        shape=box,
+        style="rounded,filled",
+        fontname="Helvetica",
+        fontsize=22,
+        margin="0.28,0.16",
+        color="#334155",
+        penwidth=1.4
+    ];
+
+    edge [
+        color="#475569",
+        penwidth=1.5,
+        arrowsize=0.9,
+        fontname="Helvetica",
+        fontsize=13
+    ];
+
+    Security [label="Security and Partners\nEmployees, Suppliers, Users, Groups", fillcolor="#e2e8f0"];
+    Master [label="Material Master\nMaterials, Types, Units, Specifications", fillcolor="#fef3c7"];
+    Procurement [label="Procurement Documents\nRequests, Offers, Orders", fillcolor="#dcfce7"];
+    Governance [label="Workflow and Budget Control\nApproval Rules, Approval Steps,\nBudgets, Budget Transactions", fillcolor="#fde68a"];
+    Warehouse [label="Warehouse and Inventory\nWarehouses, Receipts, Stock Balances,\nMaterial Transactions", fillcolor="#dbeafe"];
+    Quality [label="Inspection and Vendor Claims\nQuality Inspections, Claim Headers,\nClaim Line Items", fillcolor="#fecdd3"];
+    Control [label="Control and Auditing\nTransaction Types, Audit Logs", fillcolor="#ede9fe"];
+
+    Security -> Procurement [label="employees create and approve"];
+    Security -> Governance [label="groups approve and own budgets"];
+    Security -> Warehouse [label="employees manage and receive"];
+    Security -> Control [label="changes are audited"];
+
+    Master -> Procurement [label="materials are requested, quoted, ordered"];
+    Master -> Warehouse [label="materials are stocked and moved"];
+    Master -> Quality [label="inspected and claimed materials"];
+
+    Procurement -> Governance [label="requests and orders require control"];
+    Procurement -> Warehouse [label="orders generate receipts and stock movements"];
+    Warehouse -> Quality [label="receipts feed inspections"];
+    Quality -> Procurement [label="claims return to supplier resolution"];
+    Warehouse -> Control [label="transactions use control rules"];
+    Governance -> Control [label="status and budget events are logged"];
+    Procurement -> Control [label="document states are tracked"];
+}
